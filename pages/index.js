@@ -1,116 +1,54 @@
 import { useState } from "react";
 import logo from "../logo2.png";
 
+import { useRouter } from "next/router";
+
 export default function Home() {
+  const router = useRouter();
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
   const [firstName, setFirstName] = useState("");
   const [sheetName, setSheetName] = useState("");
+  const [fromTime, setFromTime] = useState("");
+  const [toTime, setToTime] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const timeRange = `(${fromTime} - ${toTime})`;
+    const fullNameWithTime = `${firstName} ${timeRange} `;
+    async function fetchReceiptNumber() {
+      const response = await fetch("/api/getReceiptNumber");
+      const data = await response.json();
+      return data.receiptNumber;
+    }
 
     const response = await fetch("/api/reserve", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date, time, phoneNumber, firstName, sheetName }),
+      body: JSON.stringify({
+        date,
+        time,
+        phoneNumber,
+        firstName: fullNameWithTime,
+        sheetName,
+      }),
     });
 
     if (response.ok) {
       const responseData = await response.json();
-      const { message, receiptNumber } = responseData;
-
+      const receiptNumber = await fetchReceiptNumber();
+      console.log("recipt" + receiptNumber);
       // Display the receipt message to the user with receipt number
-      const receiptMessage = `Reservation successful!\n\nThank you for choosing our service.\n\nName: ${firstName}\nDate: ${date}\nTime: ${time}\nPhone number: ${phoneNumber}\nReceipt number: ${receiptNumber}`;
+      const receiptMessage = `Reservation successful!\n\nThank you for choosing our service.\n\nName: ${fullNameWithTime}\nDate: ${date}\nTime: ${fromTime} - ${toTime}\nPhone number: ${phoneNumber}\nReceipt number: ${receiptNumber}`;
       setMessage(receiptMessage);
 
       // Create receipt HTML template with receipt number
-      const receiptHTML = `
-      <html>
-        <head>
-          <title>Reservation Receipt</title>
-          <style>
-            /* Receipt styles */
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: Arial, sans-serif;
-            }
-            .receipt-wrapper {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-            }
-            .receipt {
-              margin: 20px auto;
-              padding: 20px;
-              max-width: 400px;
-              border: 2px solid #000;
-              border-radius: 10px;
-              box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-            }
-            .logo {
-              text-align: center;
-              margin-bottom: 20px;
-            }
-            .logo img {
-              max-width: 100%;
-              height: auto;
-            }
-            .receipt h1 {
-              text-align: center;
-              font-size: 1.5rem;
-              margin-bottom: 20px;
-            }
-            .receipt p {
-              font-size: 1.1rem;
-              margin: 0 0 10px 0;
-            }
-            .receipt .label {
-              font-weight: bold;
-              display: inline-block;
-              width: 120px;
-            }
-            .receipt hr {
-              border: none;
-              border-top: 1px solid #000;
-              margin: 20px 0;
-            }
-            .receipt .thank-you {
-              text-align: center;
-              font-size: 1.2rem;
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="receipt-wrapper">
-            <div class="receipt">
-          
-              <h1>Reservation Receipt</h1>
-              <p><span class="label">Name:</span> ${firstName}</p>
-              <p><span class="label">Date:</span> ${date}</p>
-              <p><span class="label">Time:</span> ${time}</p>
-              <p><span class="label">Phone:</span> ${phoneNumber}</p>
-              <p><span class="label">Receipt number:</span> ${receiptNumber}</p>
-              <hr>
-              <p class="thank-you">Thank you for choosing our service!</p>
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
-
-      // Create new window with receipt HTML
-      const receiptWindow = window.open("", "Receipt", "height=600,width=400");
-      receiptWindow.document.write(receiptHTML);
-      receiptWindow.document.close();
-
-      // Trigger print dialog box
-      receiptWindow.print();
+      router.push(
+        `/receipt/${receiptNumber}?firstName=${firstName}&date=${date}&time=${time}&phoneNumber=${phoneNumber}&timeFrom=${fromTime}&timeTo=${toTime}`
+      );
 
       // Clear the form fields
       setDate("");
@@ -197,6 +135,40 @@ export default function Home() {
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-1/2 px-3">
+            <label
+              class="block text-right uppercase tracking-wide text-gray-700 text-lg mb-2"
+              for="grid-first-name"
+            >
+              کات (بۆ)
+            </label>
+            <input
+              class="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="grid-first-name"
+              type="time"
+              value={toTime}
+              onChange={(e) => setToTime(e.target.value)}
+              required
+            />
+          </div>
+          <div class="w-1/2 px-3">
+            <label
+              class="block text-right uppercase tracking-wide text-gray-700 text-lg mb-2"
+              for="grid-first-name"
+            >
+              کات (لە)
+            </label>
+            <input
+              class="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              id="grid-first-name"
+              type="time"
+              value={fromTime}
+              onChange={(e) => setFromTime(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
             <label
               class="block uppercase tracking-wide text-right text-gray-700 text-lg mb-2"
@@ -231,9 +203,9 @@ export default function Home() {
                 id="grid-state"
               >
                 <option value="">Select time</option>
-                <option value="morning">بەیانیان</option>
-                <option value="afternoon">ئێواران</option>
-                <option value="evening">شەوان</option>
+                <option value="بەیانیان">بەیانیان</option>
+                <option value="ئێواران">ئێواران</option>
+                <option value="شەوان">شەوان</option>
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                 <svg

@@ -1,18 +1,33 @@
 import { getSheetValues, updateSheetValues } from "../../sheets";
-
-let lastReceiptNumber = 0;
+import fs from "fs";
+import path from "path";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const { date, time, phoneNumber, firstName, sheetName } = req.body;
 
-      const receiptNumber = Date.now().toString().slice(-4);
+      const receiptNumberFilePath = path.resolve("receiptNumber.json");
+      const receiptNumberData = JSON.parse(
+        fs.readFileSync(receiptNumberFilePath, "utf-8")
+      );
+      const receiptNumber = receiptNumberData.current;
+
+      // Increment and save the receipt number to the JSON file
+      receiptNumberData.current += 1;
+      fs.writeFileSync(
+        receiptNumberFilePath,
+        JSON.stringify(receiptNumberData),
+        "utf-8"
+      );
+
+      // Format the receipt number with leading zeros
+      const formattedReceiptNumber = receiptNumber.toString().padStart(4, "0");
 
       const columnHeaderMapping = {
-        morning: ["C", "D", "E"],
-        afternoon: ["F", "G", "H"],
-        evening: ["I", "J", "K"],
+        بەیانیان: ["C", "D", "E"],
+        ئێواران: ["F", "G", "H"],
+        شەوان: ["I", "J", "K"],
       };
       const columnHeader = columnHeaderMapping[time.toLowerCase()];
       if (!columnHeader) {
@@ -49,12 +64,13 @@ export default async function handler(req, res) {
       }${rowIndex + 1}`;
 
       await updateSheetValues(updateRange, [
-        [receiptNumber, firstName, phoneNumber],
+        [formattedReceiptNumber, firstName, phoneNumber],
       ]);
 
-      res
-        .status(200)
-        .json({ message: "Reservation successfully created.", receiptNumber });
+      res.status(200).json({
+        message: "Reservation successfully created.",
+        formattedReceiptNumber,
+      });
     } catch (error) {
       console.error(error);
       res
