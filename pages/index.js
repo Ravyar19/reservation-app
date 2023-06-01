@@ -14,6 +14,8 @@ export default function Home() {
   const [sheetName, setSheetName] = useState("");
   const [fromTime, setFromTime] = useState("");
   const [toTime, setToTime] = useState("");
+  const [price, setPrice] = useState("");
+  const [type, setType] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -34,6 +36,8 @@ export default function Home() {
         phoneNumber,
         firstName: fullNameWithTime,
         sheetName,
+        price,
+        type,
       }),
     });
 
@@ -47,7 +51,7 @@ export default function Home() {
 
       // Create receipt HTML template with receipt number
       router.push(
-        `/receipt/${receiptNumber}?firstName=${firstName}&date=${date}&time=${time}&phoneNumber=${phoneNumber}&timeFrom=${fromTime}&timeTo=${toTime}`
+        `/receipt/${receiptNumber}?firstName=${firstName}&date=${date}&time=${time}&phoneNumber=${phoneNumber}&timeFrom=${fromTime}&timeTo=${toTime}&price=${price}&type=${type}`
       );
 
       // Clear the form fields
@@ -55,6 +59,8 @@ export default function Home() {
       setTime("");
       setPhoneNumber("");
       setFirstName("");
+      setPrice("");
+      setType("");
     } else {
       const errorData = await response.json();
       setMessage(` ${errorData.error}`);
@@ -63,58 +69,6 @@ export default function Home() {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      {/* <h2>Create Reservation</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Date:
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Time:
-          <select
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            required
-          >
-            <option value="">Select time</option>
-            <option value="morning">Morning</option>
-            <option value="afternoon">Afternoon</option>
-            <option value="evening">Evening</option>
-          </select>
-        </label>
-        <br />
-
-        <br />
-        <label>
-          Phone Number:
-          <input
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <button type="submit">Submit Reservation</button>
-      </form>
-      {message && <p>{message}</p>} */}
-
       <form class="w-full max-w-lg" onSubmit={handleSubmit}>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full md:full px-3 mb-6 md:mb-0">
@@ -184,6 +138,50 @@ export default function Home() {
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label
+              class="block uppercase tracking-wide text-right text-gray-700 text-lg mb-2"
+              for="grid-password"
+            >
+              پێشەکی
+            </label>
+            <input
+              class="appearance-none block w-full text-right bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-password"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <div class="relative">
+              <label
+                class="block uppercase tracking-wide text-right text-gray-700 text-lg mb-2"
+                for="grid-state"
+              >
+                جۆری ئاهەنگ
+              </label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+                class="block appearance-none w-full text-right bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-state"
+              >
+                <option value="">Type</option>
+                <option value="شەکراو">شەکراو</option>
+                <option value="ئاهەنگ">ئاهەنگی بوک و زاوا</option>
+                <option value="ئاهەنگی زانکۆ"> ئاهەنگی زانکۆ</option>
+                <option value="کۆبونەوە"> کۆبونەوە</option>
+                <option value="سیمینار"> سیمینار</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-2">
