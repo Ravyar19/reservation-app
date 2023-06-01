@@ -30,10 +30,27 @@ const Receipt = ({
   return (
     <div>
       <div class="flex flex-col min-h-screen">
-        <div class=" m-0 bg-black text-white p-3">
+        <div class=" m-0 bg-black text-white p-3 flex justify-between">
+          <div className="flex flex-col justify-center items-start ">
+            <div className="flex space-x-3">
+              <Image src={fb} width={25} />
+              <p className="font-bold">Oscar Hall</p>
+            </div>{" "}
+            <div className="flex space-x-3">
+              <Image src={insta} width={25} />
+              <p className="font-bold">Oscar___Hall</p>
+            </div>
+          </div>
           <div class="flex flex-col items-center justify-center">
             <Image src={logo} width={150} />
             <p>ناونیشان- شەقامی گشتی سەرچنار</p>
+          </div>
+          <div
+            className="flex flex-col
+           items-center justify-center text-sm"
+          >
+            <p>07701489449</p>
+            <p>07703505050</p>
           </div>
         </div>
         <div className="flex text-right flex-col mx-15 px-20 mt-5 ">
@@ -45,8 +62,8 @@ const Receipt = ({
             یەکترناسینی کۆلێژ و پەیمانگاکان - کۆڕ - کۆبونەوە
           </p>
         </div>
-        <div class="flex justify-center items-center bg-white flex-grow flex-shrink">
-          <div class="receipt-wrapper  bg-gray-100 rounded-lg shadow-md p-20">
+        <div class="flex justify-center items-center bg-white flex-grow flex-shrink mt-5">
+          <div class="receipt-wrapper  bg-gray-100 rounded-lg shadow-md p-12">
             <div class="receipt text-center">
               <p class="mb-2 text-xl">
                 <span class="font-semibold ">ژمارەی پسوڵە :</span>{" "}
@@ -73,13 +90,14 @@ const Receipt = ({
                 <span class="font-semibold">کات :</span> {timeFrom} - {timeTo}
               </p>
               <p class="mb-4 text-xl">
-                <span class="font-semibold">پێشەکی :</span> {price} (هەزار)
+                <span class="font-semibold">پێشەکی :</span> {price} (هەزار
+                دینار)
               </p>
               <hr class="mb-4" />
             </div>
           </div>
         </div>
-        <div className="flex flex-col  text-right mx-15 px-20">
+        <div className="flex flex-col  text-right mx-15 px-20 mb-5">
           <h1 className="text-2xl mb-2 font-bold">:تێبینی</h1>
 
           <p className="font-bold">
@@ -106,38 +124,17 @@ const Receipt = ({
         </div>
 
         <div class="flex justify-between mx-15 px-20 items-center bg-white flex-grow flex-shrink ">
-          <div>
+          <div className="mt-10">
             <p className="font-bold">: ئیدارەی هۆڵ</p>
             <p className="space-x-6 font-bold">
               <span>20</span> <span> / </span> <span> / </span>{" "}
             </p>
             <p></p>
           </div>
-          <div>
+          <div className="mt-10">
             <p className="font-bold">: واژۆ </p>
             <p className="font-bold">: بەکرێ گر</p>
             <p className="font-bold">: ژمارەی تەلەفون</p>
-          </div>
-        </div>
-        <div class="flex justify-between m-0 bg-black text-white p-5">
-          <div className="flex items-center flex-col justify-center">
-            <p className="font-bold">07701489449</p>
-            <p className="font-bold">07703505050</p>
-          </div>
-          <div class="flex flex-col justify-center items-center">
-            <Image src={logo} width={150} />
-          </div>
-          <div class="flex justify-end">
-            <div className="flex flex-col items-start justify-start space-y-2">
-              <div className="flex space-x-3">
-                <Image src={fb} width={25} />
-                <p className="font-bold">Oscar Hall</p>
-              </div>
-              <div className="flex space-x-3">
-                <Image src={insta} width={25} />
-                <p className="font-bold">Oscar___Hall</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
