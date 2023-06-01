@@ -1,14 +1,9 @@
-import fs from "fs";
-import path from "path";
+let receiptNumber = 0;
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      const filePath = path.join(process.cwd(), "receiptNumber.json");
-      const fileData = fs.readFileSync(filePath, "utf8");
-      const receiptData = JSON.parse(fileData);
-
-      res.status(200).json({ receiptNumber: receiptData.current });
+      res.status(200).json({ receiptNumber: receiptNumber });
     } catch (error) {
       console.error(error);
       res
@@ -18,4 +13,8 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ error: "Method not allowed." });
   }
+}
+
+export function incrementReceiptNumber() {
+  receiptNumber++;
 }
