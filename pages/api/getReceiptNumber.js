@@ -1,14 +1,8 @@
-import fs from "fs";
-import path from "path";
-
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      const filePath = path.join(process.cwd(), "receiptNumber.json");
-      const fileData = fs.readFileSync(filePath, "utf8");
-      const receiptData = JSON.parse(fileData);
-
-      res.status(200).json({ receiptNumber: receiptData.current });
+      const receiptNumber = parseInt(process.env.RECEIPT_NUMBER);
+      res.status(200).json({ receiptNumber });
     } catch (error) {
       console.error(error);
       res

@@ -7,19 +7,8 @@ export default async function handler(req, res) {
     try {
       const { date, time, phoneNumber, firstName, sheetName } = req.body;
 
-      const receiptNumberFilePath = path.resolve("receiptNumber.json");
-      const receiptNumberData = JSON.parse(
-        fs.readFileSync(receiptNumberFilePath, "utf-8")
-      );
-      const receiptNumber = receiptNumberData.current;
-
-      // Increment and save the receipt number to the JSON file
-      receiptNumberData.current += 1;
-      fs.writeFileSync(
-        receiptNumberFilePath,
-        JSON.stringify(receiptNumberData),
-        "utf-8"
-      );
+      const receiptNumber = parseInt(process.env.RECEIPT_NUMBER);
+      process.env.RECEIPT_NUMBER = receiptNumber + 1;
 
       // Format the receipt number with leading zeros
       const formattedReceiptNumber = receiptNumber.toString().padStart(4, "0");

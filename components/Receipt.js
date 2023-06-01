@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from ".././logo2.png";
 import Image from "next/image";
 import fb from ".././facebook.png";
@@ -15,7 +15,18 @@ const Receipt = ({
   id,
   type,
 }) => {
-  console.log("reccc  " + id);
+  const [receiptNumber, setReceiptNumber] = useState(0);
+
+  useEffect(() => {
+    async function fetchReceiptNumber() {
+      const response = await fetch("/api/getReceiptNumber");
+      const data = await response.json();
+      const receiptNumber = data.receiptNumber - 1;
+      setReceiptNumber(receiptNumber.toString().padStart(4, "0"));
+    }
+
+    fetchReceiptNumber();
+  }, []);
   return (
     <div>
       <div class="flex flex-col min-h-screen">
@@ -24,7 +35,7 @@ const Receipt = ({
             <Image src={logo} width={150} />
             <p>ناونیشان- شەقامی گشتی سەرچنار</p>
           </div>
-          <div></div>
+          <div>Receipt Number: {receiptNumber}</div>
         </div>
         <div className="flex text-right flex-col mx-15 px-20 mt-5 ">
           <p className="font-bold ">
