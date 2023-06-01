@@ -31,7 +31,7 @@ const Receipt = ({
     <div>
       <div class="flex flex-col min-h-screen">
         <div class=" m-0 bg-black text-white p-3 flex justify-between">
-          <div className="flex flex-col justify-center items-start ">
+          <div className="flex flex-col ml-10 justify-center items-start ">
             <div className="flex space-x-3">
               <Image src={fb} width={25} />
               <p className="font-bold">Oscar Hall</p>
@@ -47,7 +47,7 @@ const Receipt = ({
           </div>
           <div
             className="flex flex-col
-           items-center justify-center text-sm"
+           items-center justify-center text-sm mr-10"
           >
             <p>07701489449</p>
             <p>07703505050</p>
