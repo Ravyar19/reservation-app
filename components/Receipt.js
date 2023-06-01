@@ -30,12 +30,11 @@ const Receipt = ({
   return (
     <div>
       <div class="flex flex-col min-h-screen">
-        <div class="flex justify-between m-0 bg-black text-white p-3">
-          <div class="flex flex-col justify-center items-center">
+        <div class=" m-0 bg-black text-white p-3">
+          <div class="flex flex-col items-center justify-center">
             <Image src={logo} width={150} />
             <p>ناونیشان- شەقامی گشتی سەرچنار</p>
           </div>
-          <div>Receipt Number: {receiptNumber}</div>
         </div>
         <div className="flex text-right flex-col mx-15 px-20 mt-5 ">
           <p className="font-bold ">
@@ -50,7 +49,8 @@ const Receipt = ({
           <div class="receipt-wrapper  bg-gray-100 rounded-lg shadow-md p-20">
             <div class="receipt text-center">
               <p class="mb-2 text-xl">
-                <span class="font-semibold ">ژمارەی پسوڵە :</span> {id}
+                <span class="font-semibold ">ژمارەی پسوڵە :</span>{" "}
+                {receiptNumber}
               </p>
 
               <p class="mb-2 text-xl">
