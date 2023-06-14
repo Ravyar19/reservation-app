@@ -16,6 +16,7 @@ export default function Home() {
   const [toTime, setToTime] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("");
+  const [actuallPrice, setActuallPrice] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -38,6 +39,7 @@ export default function Home() {
         sheetName,
         price,
         type,
+        actuallPrice,
       }),
     });
 
@@ -51,7 +53,7 @@ export default function Home() {
 
       // Create receipt HTML template with receipt number
       router.push(
-        `/receipt/${receiptNumber}?firstName=${firstName}&date=${date}&time=${time}&phoneNumber=${phoneNumber}&timeFrom=${fromTime}&timeTo=${toTime}&price=${price}&type=${type}`
+        `/receipt/${receiptNumber}?firstName=${firstName}&date=${date}&time=${time}&phoneNumber=${phoneNumber}&timeFrom=${fromTime}&timeTo=${toTime}&price=${price}&type=${type}&actuallPrice=${actuallPrice}`
       );
 
       // Clear the form fields
@@ -61,10 +63,28 @@ export default function Home() {
       setFirstName("");
       setPrice("");
       setType("");
+      setActuallPrice("");
     } else {
       const errorData = await response.json();
       setMessage(` ${errorData.error}`);
     }
+  }
+
+  function generateTimeOptions() {
+    const options = [];
+
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minutes of ["00", "30"]) {
+        const time = `${hour}:${minutes}`;
+        options.push(
+          <option key={time} value={time}>
+            {time}
+          </option>
+        );
+      }
+    }
+
+    return options;
   }
 
   return (
@@ -96,14 +116,15 @@ export default function Home() {
             >
               کات (بۆ)
             </label>
-            <input
-              class="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            <select
+              className="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-first-name"
-              type="time"
               value={toTime}
               onChange={(e) => setToTime(e.target.value)}
               required
-            />
+            >
+              {generateTimeOptions()}
+            </select>
           </div>
           <div class="w-1/2 px-3">
             <label
@@ -112,14 +133,15 @@ export default function Home() {
             >
               کات (لە)
             </label>
-            <input
-              class="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            <select
+              className="appearance-none text-right block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-first-name"
-              type="time"
               value={fromTime}
               onChange={(e) => setFromTime(e.target.value)}
               required
-            />
+            >
+              {generateTimeOptions()}
+            </select>
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
@@ -146,6 +168,24 @@ export default function Home() {
               class="block uppercase tracking-wide text-right text-gray-700 text-lg mb-2"
               for="grid-password"
             >
+              نرخ
+            </label>
+            <input
+              class="appearance-none block w-full text-right bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="grid-password"
+              type="number"
+              value={actuallPrice}
+              onChange={(e) => setActuallPrice(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label
+              class="block uppercase tracking-wide text-right text-gray-700 text-lg mb-2"
+              for="grid-password"
+            >
               پێشەکی
             </label>
             <input
@@ -158,6 +198,7 @@ export default function Home() {
             />
           </div>
         </div>
+
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
             <div class="relative">
@@ -176,8 +217,8 @@ export default function Home() {
               >
                 <option value="">Type</option>
                 <option value="شەکراو">شەکراو</option>
-                <option value="ئاهەنگ">ئاهەنگی بوک و زاوا</option>
-                <option value="ئاهەنگی زانکۆ"> ئاهەنگی زانکۆ</option>
+                <option value="ئاهەنگ">ئاهەنگ </option>
+                <option value="ئاهەنگی زانکۆ"> زانکۆ</option>
                 <option value="کۆبونەوە"> کۆبونەوە</option>
                 <option value="سیمینار"> سیمینار</option>
               </select>

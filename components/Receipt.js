@@ -12,7 +12,7 @@ const Receipt = ({
   timeFrom,
   timeTo,
   price,
-  id,
+  actuallPrice,
   type,
 }) => {
   const [receiptNumber, setReceiptNumber] = useState(0);
@@ -90,6 +90,10 @@ const Receipt = ({
                 <span class="font-semibold">کات :</span> {timeFrom} - {timeTo}
               </p>
               <p class="mb-4 text-xl">
+                <span class="font-semibold">نرخ :</span> {actuallPrice} (هەزار
+                دینار)
+              </p>
+              <p class="mb-4 text-xl">
                 <span class="font-semibold">پێشەکی :</span> {price} (هەزار
                 دینار)
               </p>
@@ -131,10 +135,10 @@ const Receipt = ({
             </p>
             <p></p>
           </div>
-          <div className="mt-10">
+          <div className="mt-10 text-right">
+            <p className="font-bold"> بە کرێ گر : {firstName} </p>
+            <p className="font-bold"> {phoneNumber} : ژمارەی تەلەفون</p>
             <p className="font-bold">: واژۆ </p>
-            <p className="font-bold">: بەکرێ گر</p>
-            <p className="font-bold">: ژمارەی تەلەفون</p>
           </div>
         </div>
       </div>

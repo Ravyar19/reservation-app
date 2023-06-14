@@ -15,6 +15,7 @@ export default function ReceiptPage() {
       timeTo={router.query.timeTo}
       price={router.query.price}
       type={router.query.type}
+      actuallPrice={router.query.actuallPrice}
     />
   );
 }
